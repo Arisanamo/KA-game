@@ -16,18 +16,18 @@
     }
     .container {
       display: grid;
-      grid-template-columns: repeat(8, 35px); /* 横8マス */
-      grid-template-rows: repeat(14, 35px); /* 縦14マス */
+      grid-template-columns: repeat(12, 25px); /* 横12マス */
+      grid-template-rows: repeat(20, 25px); /* 縦20マス */
       gap: 3px;
       margin: 10px 0;
     }
     .cell {
-      width: 35px;
-      height: 35px;
+      width: 25px;
+      height: 25px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 10px; /* 最小フォント */
       border: 1px solid #ccc;
       border-radius: 3px;
       cursor: pointer;
@@ -39,7 +39,7 @@
     }
     #result {
       margin-top: 10px;
-      font-size: 16px;
+      font-size: 14px; /* 結果メッセージ */
       font-weight: bold;
       text-align: center;
       max-width: 90%;
@@ -57,7 +57,7 @@
   <div id="result"></div>
 
   <script>
-    let startTime, mistakeIndex = 20; // 「姉」の固定位置（3行目5列目）
+    let startTime, mistakeIndex = 28; // 「姉」の固定位置（3行目5列目：2*12+4）
     let firstTime = null;
     let gameCount = 0;
 
@@ -66,9 +66,11 @@
       startTime = performance.now();
       const grid = document.getElementById('grid');
       grid.innerHTML = '';
-      document.getElementById('result').innerText = `試行${gameCount}/2: 「姉」をクリックしてください！`;
+      document.getElementById('result').innerText = gameCount === 1 
+        ? `試行1/2: 1つだけ異なる漢字を見つけてください！` 
+        : `試行2/2: 「姉」をクリックしてください！`; // 1回目と2回目でメッセージ分岐
 
-      const totalCells = 14 * 8;
+      const totalCells = 12 * 20; // 240マス
       for (let i = 0; i < totalCells; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
@@ -95,8 +97,8 @@
           const timeDiff = firstTime - secondTime;
           const resultText = `${firstTime.toFixed(2)},${secondTime.toFixed(2)},${timeDiff.toFixed(2)}`;
           navigator.clipboard.writeText(resultText);
-          document.getElementById('result').innerText = 
-            `2回目の正解！\n1回目のタイム: ${firstTime.toFixed(2)}秒\n2回目のタイム: ${secondTime.toFixed(2)}秒\nタイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}\nGoogle Formsに入力してください: https://forms.gle/cUXjchEnF43rtKoA8\n結果をクリップボードにコピーしました！`;
+          document.getElementById('result').innerHTML = 
+            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.gle/YOUR_FORM_ID" target="_blank">Google Formsに入力してください</a><br>結果をクリップボードにコピーしました！`;
           document.getElementById('grid').innerHTML = '';
           gameCount = 0;
         }
