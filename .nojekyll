@@ -1,0 +1,6 @@
+git clone https://github.com/your-username/kaki-game.git
+cd kaki-game
+touch .nojekyll
+git add .nojekyll
+git commit -m "Add .nojekyll to disable Jekyll"
+git push origin main
