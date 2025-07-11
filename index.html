@@ -17,7 +17,7 @@
     .container {
       display: grid;
       grid-template-columns: repeat(8, 35px); /* 横8マス */
-      grid-template-rows: repeat(10, 35px); /* 縦14マス */
+      grid-template-rows: repeat(14, 35px); /* 縦14マス */
       gap: 3px;
       margin: 10px 0;
     }
@@ -68,7 +68,7 @@
       grid.innerHTML = '';
       document.getElementById('result').innerText = `試行${gameCount}/2: 「姉」をクリックしてください！`;
 
-      const totalCells = 10 * 8;
+      const totalCells = 14 * 8;
       for (let i = 0; i < totalCells; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
