@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>漢字間違い探し（80名手動集約）</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(8, 35px); /* 横8マス */
+      grid-template-rows: repeat(10, 35px); /* 縦10マス */
+      gap: 3px;
+      margin: 10px 0;
+    }
+    .cell {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      cursor: pointer;
+      background-color: #fff;
+      user-select: none;
+    }
+    .cell:hover {
+      background-color: #e0f7fa;
+    }
+    #result {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      max-width: 90%;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 14px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="startGame()">ゲーム開始</button>
+  <div class="container" id="grid"></div>
+  <div id="result"></div>
+
+  <script>
+    let startTime, mistakeIndex = 20; // 「姉」の固定位置（3行目5列目）
+    let firstTime = null;
+    let gameCount = 0;
+
+    function startGame() {
+      gameCount++;
+      startTime = performance.now();
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      document.getElementById('result').innerText = `試行${gameCount}/2: 「姉」をクリックしてください！`;
+
+      const totalCells = 10 * 8;
+      for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.innerText = (i === mistakeIndex) ? '姉' : '柿';
+        cell.addEventListener('click', () => checkMistake(i));
+        cell.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          checkMistake(i);
+        });
+        grid.appendChild(cell);
+      }
+    }
+
+    function checkMistake(index) {
+      if (index === mistakeIndex) {
+        const endTime = performance.now();
+        const elapsedTime = (endTime - startTime) / 1000;
+        if (gameCount === 1) {
+          firstTime = elapsedTime;
+          document.getElementById('result').innerText = `1回目の正解！解答時間: ${firstTime.toFixed(2)}秒\nもう一度「ゲーム開始」を押してください。`;
+          document.getElementById('grid').innerHTML = '';
+        } else if (gameCount === 2) {
+          const secondTime = elapsedTime;
+          const timeDiff = firstTime - secondTime;
+          const resultText = `${firstTime.toFixed(2)},${secondTime.toFixed(2)},${timeDiff.toFixed(2)}`;
+          navigator.clipboard.writeText(resultText);
+          document.getElementById('result').innerText = 
+            `2回目の正解！\n1回目のタイム: ${firstTime.toFixed(2)}秒\n2回目のタイム: ${secondTime.toFixed(2)}秒\nタイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}\nGoogle Formsに入力してください: https://forms.gle/cUXjchEnF43rtKoA8\n結果をクリップボードにコピーしました！`;
+          document.getElementById('grid').innerHTML = '';
+          gameCount = 0;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
