@@ -17,7 +17,7 @@
     .container {
       display: grid;
       grid-template-columns: repeat(12, 25px); /* 横12マス */
-      grid-template-rows: repeat(20, 25px); /* 縦20マス */
+      grid-template-rows: repeat(18, 25px); /* 縦18マス */
       gap: 3px;
       margin: 10px 0;
     }
@@ -70,7 +70,7 @@
         ? `試行1/2: 1つだけ異なる漢字を見つけてください！` 
         : `試行2/2: 「姉」をクリックしてください！`; // 1回目と2回目でメッセージ分岐
 
-      const totalCells = 12 * 20; // 240マス
+      const totalCells = 12 * 18; // 240マス
       for (let i = 0; i < totalCells; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
@@ -98,7 +98,7 @@
           const resultText = `${firstTime.toFixed(2)},${secondTime.toFixed(2)},${timeDiff.toFixed(2)}`;
           navigator.clipboard.writeText(resultText);
           document.getElementById('result').innerHTML = 
-            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.gle/YOUR_FORM_ID" target="_blank">Google Formsに入力してください</a><br>結果をクリップボードにコピーしました！`;
+            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.gle/RbA4wE2JAKV51yH79" target="_blank">Google Formsに入力してください</a><br>結果をクリップボードにコピーしました！`;
           document.getElementById('grid').innerHTML = '';
           gameCount = 0;
         }
