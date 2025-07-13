@@ -16,8 +16,8 @@
     }
     .container {
       display: grid;
-      grid-template-columns: repeat(12, 25px); /* 横12マス */
-      grid-template-rows: repeat(18, 25px); /* 縦18マス */
+      grid-template-columns: repeat(12, 25px);
+      grid-template-rows: repeat(20, 25px);
       gap: 3px;
       margin: 10px 0;
     }
@@ -27,7 +27,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px; /* 最小フォント */
+      font-size: 10px;
       border: 1px solid #ccc;
       border-radius: 3px;
       cursor: pointer;
@@ -38,8 +38,8 @@
       background-color: #e0f7fa;
     }
     #result {
-      margin-top: 10px;
-      font-size: 14px; /* 結果メッセージ */
+      margin-bottom: 10px;
+      font-size: 14px;
       font-weight: bold;
       text-align: center;
       max-width: 90%;
@@ -52,12 +52,12 @@
   </style>
 </head>
 <body>
-  <button onclick="startGame()">ゲーム開始</button>
-  <div class="container" id="grid"></div>
+  <button id="startButton" onclick="startGame()">ゲーム開始</button>
   <div id="result"></div>
+  <div class="container" id="grid"></div>
 
   <script>
-    let startTime, mistakeIndex = 28; // 「姉」の固定位置（3行目5列目：2*12+4）
+    let startTime, mistakeIndex = 28;
     let firstTime = null;
     let gameCount = 0;
 
@@ -65,12 +65,14 @@
       gameCount++;
       startTime = performance.now();
       const grid = document.getElementById('grid');
+      const startButton = document.getElementById('startButton');
       grid.innerHTML = '';
+      startButton.style.display = 'none'; // ボタンを非表示
       document.getElementById('result').innerText = gameCount === 1 
         ? `試行1/2: 1つだけ異なる漢字を見つけてください！` 
-        : `試行2/2: 「姉」をクリックしてください！`; // 1回目と2回目でメッセージ分岐
+        : `試行2/2: 「姉」をクリックしてください！`;
 
-      const totalCells = 12 * 18; // 240マス
+      const totalCells = 12 * 20;
       for (let i = 0; i < totalCells; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
@@ -85,6 +87,7 @@
     }
 
     function checkMistake(index) {
+      const startButton = document.getElementById('startButton');
       if (index === mistakeIndex) {
         const endTime = performance.now();
         const elapsedTime = (endTime - startTime) / 1000;
@@ -92,14 +95,16 @@
           firstTime = elapsedTime;
           document.getElementById('result').innerText = `1回目の正解！解答時間: ${firstTime.toFixed(2)}秒\nもう一度「ゲーム開始」を押してください。`;
           document.getElementById('grid').innerHTML = '';
+          startButton.style.display = 'block'; // ボタンを再表示
         } else if (gameCount === 2) {
           const secondTime = elapsedTime;
           const timeDiff = firstTime - secondTime;
           const resultText = `${firstTime.toFixed(2)},${secondTime.toFixed(2)},${timeDiff.toFixed(2)}`;
           navigator.clipboard.writeText(resultText);
           document.getElementById('result').innerHTML = 
-            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.gle/RbA4wE2JAKV51yH79" target="_blank">Google Formsに入力してください</a><br>結果をクリップボードにコピーしました！`;
+            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.gle/JMzCNxmvKreQ5UrV9" target="_blank">Google Formsに入力してください</a><br>結果をクリップボードにコピーしました！`;
           document.getElementById('grid').innerHTML = '';
+          startButton.style.display = 'block'; // ボタンを再表示
           gameCount = 0;
         }
       }
