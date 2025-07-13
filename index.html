@@ -102,7 +102,7 @@
           const resultText = `${firstTime.toFixed(2)},${secondTime.toFixed(2)},${timeDiff.toFixed(2)}`;
           navigator.clipboard.writeText(resultText);
           document.getElementById('result').innerHTML = 
-            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.gle/JMzCNxmvKreQ5UrV9" target="_blank">Google Formsに入力してください</a><br>結果をクリップボードにコピーしました！`;
+            `2回目の正解！<br>1回目のタイム: ${firstTime.toFixed(2)}秒<br>2回目のタイム: ${secondTime.toFixed(2)}秒<br>タイム差: ${timeDiff.toFixed(2)}秒${timeDiff > 0 ? '（速くなりました！）' : timeDiff < 0 ? '（遅くなりました）' : '（同じです）'}<br><a href="https://forms.office.com/r/qbkh5y0QLZ" target="_blank">アンケートフォームに入力</a><br>結果をクリップボードにコピーしました！`;
           document.getElementById('grid').innerHTML = '';
           startButton.style.display = 'block'; // ボタンを再表示
           gameCount = 0;
